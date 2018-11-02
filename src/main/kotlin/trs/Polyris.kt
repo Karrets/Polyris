@@ -68,7 +68,7 @@ class Polyris:PApplet()
     {
         if(keyPressed)
         {
-            if(key == 'z')
+            if(key == 'a')
             {
                 keyPressed = false
                 background(0f,0f,0f)
@@ -82,7 +82,7 @@ class Polyris:PApplet()
                 }
                 drawBox(horizontalLocation, nextPos)
             }
-            if(key == 'x')
+            if(key == 'd')
             {
                 keyPressed = false
                 background(0f,0f,0f)
