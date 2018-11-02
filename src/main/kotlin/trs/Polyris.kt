@@ -12,7 +12,7 @@ class Polyris:PApplet()
     var lastDrawTime = System.currentTimeMillis() / 1000
     var nextPos = 0f
     var horizontalLocation = 0f
-    var boxSize = 50f
+    val boxSize = 50f
     var blockReachedBottom = false
     var xInternal1 = 0f
     var xInternal2 = boxSize
