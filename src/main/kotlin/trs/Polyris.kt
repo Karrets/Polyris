@@ -19,6 +19,12 @@ class Polyris:PApplet()
     var yInternal1 = 0f
     var yInternal2 = boxSize
     var disableDrop = false
+    val xSize = 9
+    val ySize = 14
+    val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 6 })
+    {
+
+    }
     override fun settings()
     {
         size(450, 650) //Should be a multiple of variable boxSize
@@ -32,10 +38,15 @@ class Polyris:PApplet()
     {
         playerInput()
         canBoxMove()
+        drawStuckPieces()
         doLoop(false)
         doHacks(true)
 
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
+    fun drawStuckPieces()
+    {
+
+    }
     fun doHacks(doHacks: Boolean)
     {
         if(doHacks == true)
