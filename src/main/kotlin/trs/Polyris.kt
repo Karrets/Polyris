@@ -1,9 +1,6 @@
 package trs
 
 import processing.core.PApplet
-import processing.core.PConstants
-import java.time.LocalDateTime
-import kotlin.math.nextDown
 
 fun main(args: Array<String>)
 {
@@ -19,6 +16,7 @@ class Polyris:PApplet()
     var xInternal2 = 50f
     var yInternal1 = 0f
     var yInternal2 = 50f
+    var boxSize = 50f
     override fun settings()
     {
         size(450, 650)
@@ -28,10 +26,22 @@ class Polyris:PApplet()
         fill(229f, 27f, 212f)
         background(0f,0f,0f)
     }
-    override fun draw()
+    override fun draw() //IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
     {
         playerInput()
         canBoxMove()
+        doLoop(false)
+    }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
+    fun doLoop(doLoop: Boolean)
+    {
+        if(doLoop == true)
+        {
+            if(blockReachedBottom == true)
+            {
+                blockReachedBottom = false
+                nextPos = 0f
+            }
+        }
     }
     fun canBoxMove()
     {
