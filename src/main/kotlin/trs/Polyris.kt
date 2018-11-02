@@ -96,6 +96,17 @@ class Polyris:PApplet()
                 }
                 drawBox(horizontalLocation, nextPos)
             }
+            if(key == 's')
+            {
+                keyPressed = false
+                background(0f,0f,0f)
+                if(blockReachedBottom == false)
+                {
+                    nextPos = height / 50f - 1
+                    blockReachedBottom = true
+                }
+                drawBox(horizontalLocation, nextPos)
+            }
         }
     }
 }
