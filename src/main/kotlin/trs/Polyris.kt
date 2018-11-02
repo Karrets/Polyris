@@ -11,14 +11,13 @@ class Polyris:PApplet()
 {
     var lastDrawTime = System.currentTimeMillis() / 1000
     var nextPos = 0f
-    var horizontalLocation = 0f
+    var horizontalLocation = 4f
     val boxSize = 50f
     var blockReachedBottom = false
     var xInternal1 = 0f
     var xInternal2 = boxSize
     var yInternal1 = 0f
     var yInternal2 = boxSize
-    var disableDrop = false
     val xSize = 9
     val ySize = 14
     val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 6 })
@@ -43,7 +42,18 @@ class Polyris:PApplet()
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
     fun drawStuckPieces()
     {
-
+        for(x in 0 until xSize)
+        {
+            for(y in 0 until ySize)
+            {
+                if(stuckPieces[x,y])
+                {
+                    fill(111f, 232f, 119f)
+                    drawBox(x.toFloat(),y.toFloat())
+                    fill(229f, 27f, 212f)
+                }
+            }
+        }
     }
     fun doHacks(doHacks: Boolean)
     {
@@ -58,11 +68,6 @@ class Polyris:PApplet()
                     nextPos = 0f
                     background(0f,0f,0f)
                     drawBox(horizontalLocation, nextPos)
-                }
-                if(key == 'o')
-                {
-                    keyPressed = false
-                    disableDrop = !disableDrop
                 }
             }
         }
@@ -80,17 +85,20 @@ class Polyris:PApplet()
     }
     fun canBoxMove()
     {
-        if(disableDrop == false)
+        var tsLong = System.currentTimeMillis() / 1000
+        if (tsLong - lastDrawTime > 0.5)
         {
-            var tsLong = System.currentTimeMillis() / 1000
-            if (tsLong - lastDrawTime > 0.5) {
+            if(stuckPieces[horizontalLocation.toInt(), nextPos.toInt()])
+            {
+                blockReachedBottom = true
+            }
+            else
+            {
                 background(0f, 0f, 0f)
                 drawBox(horizontalLocation, nextPos) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
                 if (nextPos >= height / 50 - 1) {
                     blockReachedBottom = true;
-                }
-                else
-                {
+                } else {
                     nextPos += 1f
                 }
                 lastDrawTime = System.currentTimeMillis() / 1000
@@ -112,46 +120,39 @@ class Polyris:PApplet()
     }
     fun playerInput()
     {
-        if(keyPressed)
+        if(blockReachedBottom == true)
         {
-            if(key == 'a')
-            {
-                keyPressed = false
-                background(0f,0f,0f)
-                if(blockReachedBottom == false)
-                {
-                    horizontalLocation -= 1f
+            //Can't move
+        }
+        else
+        {
+            if (keyPressed) {
+                if (key == 'a') {
+                    keyPressed = false
+                    background(0f, 0f, 0f)
+                    if (blockReachedBottom == false)
+                        horizontalLocation -= 1f
+                    if (horizontalLocation < 0) {
+                        horizontalLocation = 0f
+                    }
+                    drawBox(horizontalLocation, nextPos)
                 }
-                if(horizontalLocation < 0)
-                {
-                    horizontalLocation = 0f
+                if (key == 'd') {
+                    keyPressed = false
+                    background(0f, 0f, 0f)
+                    if (blockReachedBottom == false)
+                        horizontalLocation += 1f
+                    drawBox(horizontalLocation, nextPos)
                 }
-                drawBox(horizontalLocation, nextPos)
-            }
-            if(key == 'd')
-            {
-                keyPressed = false
-                background(0f,0f,0f)
-                if(blockReachedBottom == false)
-                {
-                    horizontalLocation += 1f
+                if (key == 's') {
+                    keyPressed = false
+                    background(0f, 0f, 0f)
+                    if (blockReachedBottom == false) {
+                        nextPos = height / boxSize - 1
+                        blockReachedBottom = true
+                    }
+                    drawBox(horizontalLocation, nextPos)
                 }
-                if(horizontalLocation > width / boxSize - 1)
-                {
-                    horizontalLocation = width / boxSize - 1
-                }
-                drawBox(horizontalLocation, nextPos)
-            }
-            if(key == 's')
-            {
-                keyPressed = false
-                background(0f,0f,0f)
-                if(blockReachedBottom == false)
-                {
-                    nextPos = height / boxSize - 1
-                    blockReachedBottom = true
-                }
-                drawBox(horizontalLocation, nextPos)
             }
         }
     }
