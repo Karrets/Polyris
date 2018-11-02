@@ -1,2 +1,0 @@
-# Polyris
-Tetris Clone
