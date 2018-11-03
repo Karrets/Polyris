@@ -60,7 +60,7 @@ class Polyris : PApplet() {
     fun canBoxMove() {
         var tsLong = System.currentTimeMillis() / 1000
         if (tsLong - lastDrawTime > 0.5) {
-            if (stuckPieces[horizontalLocation.toInt(), nextPos.toInt()]) {
+            if (stuckPieces.outside(horizontalLocation, nextPos) || stuckPieces[horizontalLocation, nextPos]) {
                 addBlocksToArray()
             } else {
                 background(0f, 0f, 0f)
