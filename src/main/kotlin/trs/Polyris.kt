@@ -30,8 +30,29 @@ class Polyris : PApplet() {
         playerInput()
         canBoxMove()
         drawStuckPieces()
+        clearLines()
 
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
+
+    fun clearLines() {
+        var foundGap = false
+        for (y in 0 until ySize) {
+            for (x in 0 until xSize) {
+                if (!stuckPieces[x, y]) {
+                    foundGap = true
+                }
+            }
+            if (!foundGap) {
+                for (x in 0 until xSize) {
+                    stuckPieces[x, y] = false
+                }
+            }
+        }
+        if(foundGap)
+        {
+            
+        }
+    }
 
     fun addBlocksToArray() {
         if (horizontalLocation.toInt() > 9) {
