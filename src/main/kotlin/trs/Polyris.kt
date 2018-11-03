@@ -1,14 +1,13 @@
 package trs
 
-import processing.core.PApplet
 import kaiju.math.Matrix2d
+import processing.core.PApplet
 
-fun main(args: Array<String>)
-{
+fun main(args: Array<String>) {
     PApplet.main("trs.Polyris")
 }
-class Polyris:PApplet()
-{
+
+class Polyris : PApplet() {
     var lastDrawTime = System.currentTimeMillis() / 1000
     var nextPos = 0f
     var horizontalLocation = 4f
@@ -22,82 +21,55 @@ class Polyris:PApplet()
     val ySize = 14
     val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 6 })
 
-    override fun settings()
-    {
+    override fun settings() {
         size(450, 650) //Should be a multiple of variable boxSize
     }
-    override fun setup()
-    {
+
+    override fun setup() {
         fill(229f, 27f, 212f)
-        background(0f,0f,0f)
+        background(0f, 0f, 0f)
     }
+
     override fun draw() //IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
     {
         playerInput()
         canBoxMove()
         drawStuckPieces()
-        doLoop(false)
-        doHacks(true)
+        addBlocksToArray()
 
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
-    fun drawStuckPieces()
-    {
-        for(x in 0 until xSize)
-        {
-            for(y in 0 until ySize)
-            {
-                if(stuckPieces[x,y])
-                {
-                    fill(111f, 232f, 119f)
-                    drawBox(x.toFloat(),y.toFloat())
+
+    fun addBlocksToArray() {
+        if (blockReachedBottom == true) {
+            stuckPieces[horizontalLocation.toInt(), nextPos.toInt() - 1] = true
+            nextPos = 0f
+            horizontalLocation = 4f
+            blockReachedBottom = false
+        }
+    }
+
+    fun drawStuckPieces() {
+        for (x in 0 until xSize) {
+            for (y in 0 until ySize) {
+                if (stuckPieces[x, y]) {
+                    fill(26f, 228f, 43f)
+                    drawBox(x.toFloat(), y.toFloat())
                     fill(229f, 27f, 212f)
                 }
             }
         }
     }
-    fun doHacks(doHacks: Boolean)
-    {
-        if(doHacks == true)
-        {
-            if(keyPressed == true)
-            {
-                if(key == 'p')
-                {
-                    keyPressed = false
-                    blockReachedBottom = false
-                    nextPos = 0f
-                    background(0f,0f,0f)
-                    drawBox(horizontalLocation, nextPos)
-                }
-            }
-        }
-    }
-    fun doLoop(doLoop: Boolean)
-    {
-        if(doLoop == true)
-        {
-            if(blockReachedBottom == true)
-            {
-                blockReachedBottom = false
-                nextPos = 0f
-            }
-        }
-    }
-    fun canBoxMove()
-    {
+
+    fun canBoxMove() {
         var tsLong = System.currentTimeMillis() / 1000
-        if (tsLong - lastDrawTime > 0.5)
-        {
-            if(stuckPieces[horizontalLocation.toInt(), nextPos.toInt()])
-            {
+        if (tsLong - lastDrawTime > 0.5) {
+            if (stuckPieces[horizontalLocation.toInt(), nextPos.toInt()]) {
                 blockReachedBottom = true
-            }
-            else
-            {
+            } else {
                 background(0f, 0f, 0f)
                 drawBox(horizontalLocation, nextPos) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
                 if (nextPos >= height / 50 - 1) {
-                    blockReachedBottom = true;
+                    blockReachedBottom = true
                 } else {
                     nextPos += 1f
                 }
@@ -105,8 +77,8 @@ class Polyris:PApplet()
             }
         }
     }
-    fun drawBox(x:Float, y:Float)
-    {
+
+    fun drawBox(x: Float, y: Float) {
         xInternal1 = x * boxSize
         xInternal2 = x * boxSize + boxSize
         yInternal1 = y * boxSize
@@ -118,40 +90,36 @@ class Polyris:PApplet()
         vertex(xInternal1, yInternal2)
         endShape(CLOSE)
     }
-    fun playerInput()
-    {
-        if(blockReachedBottom == true)
-        {
+
+    fun playerInput() {
+        if (blockReachedBottom == true) {
             //Can't move
-        }
-        else
-        {
+        } else {
             if (keyPressed) {
                 if (key == 'a') {
-                    keyPressed = false
-                    background(0f, 0f, 0f)
-                    if (blockReachedBottom == false)
-                        horizontalLocation -= 1f
-                    if (horizontalLocation < 0) {
-                        horizontalLocation = 0f
+                    if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
+                        //Blocked
+                    } else {
+                        keyPressed = false
+                        background(0f, 0f, 0f)
+                        if (blockReachedBottom == false)
+                            horizontalLocation -= 1f
+                        if (horizontalLocation < 0) {
+                            horizontalLocation = 0f
+                        }
+                        drawBox(horizontalLocation, nextPos - 1)
                     }
-                    drawBox(horizontalLocation, nextPos)
                 }
                 if (key == 'd') {
-                    keyPressed = false
-                    background(0f, 0f, 0f)
-                    if (blockReachedBottom == false)
-                        horizontalLocation += 1f
-                    drawBox(horizontalLocation, nextPos)
-                }
-                if (key == 's') {
-                    keyPressed = false
-                    background(0f, 0f, 0f)
-                    if (blockReachedBottom == false) {
-                        nextPos = height / boxSize - 1
-                        blockReachedBottom = true
+                    if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
+                        //Blocked
+                    } else {
+                        keyPressed = false
+                        background(0f, 0f, 0f)
+                        if (blockReachedBottom == false)
+                            horizontalLocation += 1f
+                        drawBox(horizontalLocation, nextPos - 1)
                     }
-                    drawBox(horizontalLocation, nextPos)
                 }
             }
         }
