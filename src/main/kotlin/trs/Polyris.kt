@@ -12,11 +12,6 @@ class Polyris : PApplet() {
     var nextPos = 0f
     var horizontalLocation = 4f
     val boxSize = 50f
-    var blockReachedBottom = false
-    var xInternal1 = 0f
-    var xInternal2 = boxSize
-    var yInternal1 = 0f
-    var yInternal2 = boxSize
     val xSize = 9
     val ySize = 14
     val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 6 })
@@ -35,17 +30,13 @@ class Polyris : PApplet() {
         playerInput()
         canBoxMove()
         drawStuckPieces()
-        addBlocksToArray()
 
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
 
     fun addBlocksToArray() {
-        if (blockReachedBottom == true) {
-            stuckPieces[horizontalLocation.toInt(), nextPos.toInt() - 1] = true
-            nextPos = 0f
-            horizontalLocation = 4f
-            blockReachedBottom = false
-        }
+        stuckPieces[horizontalLocation.toInt(), nextPos.toInt() - 1] = true
+        nextPos = 0f
+        horizontalLocation = 4f
     }
 
     fun drawStuckPieces() {
@@ -64,12 +55,12 @@ class Polyris : PApplet() {
         var tsLong = System.currentTimeMillis() / 1000
         if (tsLong - lastDrawTime > 0.5) {
             if (stuckPieces[horizontalLocation.toInt(), nextPos.toInt()]) {
-                blockReachedBottom = true
+                addBlocksToArray()
             } else {
                 background(0f, 0f, 0f)
                 drawBox(horizontalLocation, nextPos) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
                 if (nextPos >= height / 50 - 1) {
-                    blockReachedBottom = true
+                    addBlocksToArray()
                 } else {
                     nextPos += 1f
                 }
@@ -79,10 +70,10 @@ class Polyris : PApplet() {
     }
 
     fun drawBox(x: Float, y: Float) {
-        xInternal1 = x * boxSize
-        xInternal2 = x * boxSize + boxSize
-        yInternal1 = y * boxSize
-        yInternal2 = y * boxSize + boxSize
+        var xInternal1 = x * boxSize
+        var xInternal2 = x * boxSize + boxSize
+        var yInternal1 = y * boxSize
+        var yInternal2 = y * boxSize + boxSize
         beginShape()
         vertex(xInternal1, yInternal1)
         vertex(xInternal2, yInternal1)
@@ -92,34 +83,28 @@ class Polyris : PApplet() {
     }
 
     fun playerInput() {
-        if (blockReachedBottom == true) {
-            //Can't move
-        } else {
-            if (keyPressed) {
-                if (key == 'a') {
-                    if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
-                        //Blocked
-                    } else {
-                        keyPressed = false
-                        background(0f, 0f, 0f)
-                        if (blockReachedBottom == false)
-                            horizontalLocation -= 1f
-                        if (horizontalLocation < 0) {
-                            horizontalLocation = 0f
-                        }
-                        drawBox(horizontalLocation, nextPos - 1)
+        if (keyPressed) {
+            if (key == 'a') {
+                if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
+                    //Blocked
+                } else {
+                    keyPressed = false
+                    background(0f, 0f, 0f)
+                    horizontalLocation -= 1f
+                    if (horizontalLocation < 0) {
+                        horizontalLocation = 0f
                     }
+                    drawBox(horizontalLocation, nextPos - 1)
                 }
-                if (key == 'd') {
-                    if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
-                        //Blocked
-                    } else {
-                        keyPressed = false
-                        background(0f, 0f, 0f)
-                        if (blockReachedBottom == false)
-                            horizontalLocation += 1f
-                        drawBox(horizontalLocation, nextPos - 1)
-                    }
+            }
+            if (key == 'd') {
+                if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
+                    //Blocked
+                } else {
+                    keyPressed = false
+                    background(0f, 0f, 0f)
+                    horizontalLocation += 1f
+                    drawBox(horizontalLocation, nextPos - 1)
                 }
             }
         }
