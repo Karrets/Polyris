@@ -14,7 +14,7 @@ class Polyris : PApplet() {
     val boxSize = 50f
     val xSize = 9
     val ySize = 14
-    val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 6 })
+    val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 13 })
 
     override fun settings() {
         size(xSize * boxSize.toInt(), ySize * boxSize.toInt()) //Should be a multiple of variable boxSize
@@ -34,9 +34,15 @@ class Polyris : PApplet() {
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
 
     fun addBlocksToArray() {
-        stuckPieces[horizontalLocation.toInt(), nextPos.toInt() - 1] = true
-        nextPos = 0
-        horizontalLocation = 4
+        if (horizontalLocation.toInt() > 9) {
+
+        } else if (nextPos.toInt() - 1 > 14) {
+
+        } else {
+            stuckPieces[horizontalLocation.toInt(), nextPos.toInt() - 1] = true
+            nextPos = 0
+            horizontalLocation = 4
+        }
     }
 
     fun drawStuckPieces() {
@@ -59,7 +65,7 @@ class Polyris : PApplet() {
             } else {
                 background(0f, 0f, 0f)
                 drawBox(horizontalLocation.toFloat(), nextPos.toFloat()) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
-                if (nextPos >= height / 50 - 1) {
+                if (stuckPieces[horizontalLocation.toInt(), nextPos.toInt()]) {
                     addBlocksToArray()
                 } else {
                     nextPos += 1
@@ -103,6 +109,9 @@ class Polyris : PApplet() {
                 } else {
                     keyPressed = false
                     background(0f, 0f, 0f)
+                    if (horizontalLocation > xSize - 2) {
+                        horizontalLocation = xSize - 2
+                    }
                     horizontalLocation += 1
                     drawBox(horizontalLocation.toFloat(), nextPos.toFloat() - 1)
                 }
