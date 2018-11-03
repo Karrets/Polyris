@@ -9,8 +9,8 @@ fun main(args: Array<String>) {
 
 class Polyris : PApplet() {
     var lastDrawTime = System.currentTimeMillis() / 1000
-    var nextPos = 0f
-    var horizontalLocation = 4f
+    var nextPos = 0
+    var horizontalLocation = 4
     val boxSize = 50f
     val xSize = 9
     val ySize = 14
@@ -35,8 +35,8 @@ class Polyris : PApplet() {
 
     fun addBlocksToArray() {
         stuckPieces[horizontalLocation.toInt(), nextPos.toInt() - 1] = true
-        nextPos = 0f
-        horizontalLocation = 4f
+        nextPos = 0
+        horizontalLocation = 4
     }
 
     fun drawStuckPieces() {
@@ -58,11 +58,11 @@ class Polyris : PApplet() {
                 addBlocksToArray()
             } else {
                 background(0f, 0f, 0f)
-                drawBox(horizontalLocation, nextPos) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
+                drawBox(horizontalLocation.toFloat(), nextPos.toFloat()) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
                 if (nextPos >= height / 50 - 1) {
                     addBlocksToArray()
                 } else {
-                    nextPos += 1f
+                    nextPos += 1
                 }
                 lastDrawTime = System.currentTimeMillis() / 1000
             }
@@ -90,11 +90,11 @@ class Polyris : PApplet() {
                 } else {
                     keyPressed = false
                     background(0f, 0f, 0f)
-                    horizontalLocation -= 1f
+                    horizontalLocation -= 1
                     if (horizontalLocation < 0) {
-                        horizontalLocation = 0f
+                        horizontalLocation = 0
                     }
-                    drawBox(horizontalLocation, nextPos - 1)
+                    drawBox(horizontalLocation.toFloat(), nextPos.toFloat() - 1)
                 }
             }
             if (key == 'd') {
@@ -103,8 +103,8 @@ class Polyris : PApplet() {
                 } else {
                     keyPressed = false
                     background(0f, 0f, 0f)
-                    horizontalLocation += 1f
-                    drawBox(horizontalLocation, nextPos - 1)
+                    horizontalLocation += 1
+                    drawBox(horizontalLocation.toFloat(), nextPos.toFloat() - 1)
                 }
             }
         }
