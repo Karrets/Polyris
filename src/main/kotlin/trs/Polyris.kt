@@ -17,7 +17,7 @@ class Polyris : PApplet() {
     val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 6 })
 
     override fun settings() {
-        size(450, 650) //Should be a multiple of variable boxSize
+        size(xSize * boxSize.toInt(), ySize * boxSize.toInt()) //Should be a multiple of variable boxSize
     }
 
     override fun setup() {
