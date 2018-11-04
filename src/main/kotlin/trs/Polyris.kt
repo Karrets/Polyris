@@ -50,7 +50,7 @@ class Polyris : PApplet() {
         }
         if(foundGap)
         {
-            
+
         }
     }
 
