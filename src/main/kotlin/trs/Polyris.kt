@@ -14,7 +14,7 @@ class Polyris : PApplet() {
     val boxSize = 50f
     val xSize = 9
     val ySize = 14
-    val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 13 })
+    val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 9 })
 
     override fun settings() {
         size(xSize * boxSize.toInt(), ySize * boxSize.toInt()) //Should be a multiple of variable boxSize
@@ -35,23 +35,36 @@ class Polyris : PApplet() {
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
 
     fun clearLines() {
-        var foundGap = false
         for (y in 0 until ySize) {
+            var foundGap = false
             for (x in 0 until xSize) {
                 if (!stuckPieces[x, y]) {
                     foundGap = true
                 }
             }
             if (!foundGap) {
-                for (x in 0 until xSize) {
-                    stuckPieces[x, y] = false
-                }
+                clearRow(y)
             }
         }
-        if(foundGap)
-        {
+    }
 
+    fun clearRow(row: Int) {
+
+        // reversed here switches 0 to row into row to zero
+        for (y in (0..row).reversed()) {
+            println(y)
+            if (y == 0) {
+                // reset if we are at the top
+                for (x in 0 until xSize)
+                    stuckPieces[x, y] = false
+
+            } else {
+                for (x in 0 until xSize)
+                    stuckPieces[x, y] = stuckPieces[x, y - 1]
+
+            }
         }
+
     }
 
     fun addBlocksToArray() {
@@ -109,10 +122,11 @@ class Polyris : PApplet() {
         endShape(CLOSE)
     }
 
+
     fun playerInput() {
         if (keyPressed) {
             if (key == 'a') {
-                if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
+                if (stuckPieces.outside(horizontalLocation,nextPos) ||stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
                     //Blocked
                 } else {
                     keyPressed = false
@@ -125,7 +139,7 @@ class Polyris : PApplet() {
                 }
             }
             if (key == 'd') {
-                if (stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
+                if (stuckPieces.outside(horizontalLocation,nextPos) || stuckPieces[horizontalLocation.toInt() - 1, nextPos.toInt() - 1]) {
                     //Blocked
                 } else {
                     keyPressed = false
