@@ -151,6 +151,15 @@ class Polyris : PApplet() {
                     drawBox(horizontalLocation.toFloat(), nextPos.toFloat() - 1)
                 }
             }
+            if (key == 's') {
+                keyPressed = false
+                for (y in 0 until ySize) {
+                    background(0f, 0f,0f)
+                    drawBox(4f, 0f)
+                    nextPos = y
+                }
+                addBlocksToArray()
+            }
         }
     }
 }
