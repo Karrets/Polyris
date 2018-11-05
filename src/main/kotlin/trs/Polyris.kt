@@ -12,8 +12,8 @@ class Polyris : PApplet() {
     var nextPos = 0
     var horizontalLocation = 4
     val boxSize = 50f
-    val xSize = 9
-    val ySize = 14
+    val xSize = 5
+    val ySize = 10
     val stuckPieces = Matrix2d<Boolean>(xSize, ySize, { x, y -> y > 13 })
 
     override fun settings() {
