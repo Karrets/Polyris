@@ -2,6 +2,7 @@ package trs
 
 import kaiju.math.Matrix2d
 import processing.core.PApplet
+import processing.core.PConstants
 
 fun main(args: Array<String>) {
     PApplet.main("trs.Polyris")
@@ -129,7 +130,7 @@ class Polyris : PApplet() {
 
     fun playerInput() {
         if (keyPressed) {
-            if (key == 'a') {
+            if (key == 'a' || keyCode == PConstants.LEFT) {
                 if (gameState.stuckPieces.outside(gameState.horizontalLocation - 1, gameState.nextPos) || gameState.stuckPieces[gameState.horizontalLocation - 1, gameState.nextPos]) {
                     //Blocked
                 } else {
@@ -142,7 +143,7 @@ class Polyris : PApplet() {
                     drawBox(gameState.horizontalLocation.toFloat(), gameState.nextPos.toFloat() - 1)
                 }
             }
-            if (key == 'd') {
+            if (key == 'd' || keyCode == PConstants.RIGHT) {
                 if (gameState.stuckPieces.outside(gameState.horizontalLocation + 1, gameState.nextPos) || gameState.stuckPieces[gameState.horizontalLocation + 1, gameState.nextPos]) {
                     //Blocked
                 } else {
@@ -155,7 +156,7 @@ class Polyris : PApplet() {
                     drawBox(gameState.horizontalLocation.toFloat(), gameState.nextPos.toFloat() - 1)
                 }
             }
-            if (key == 's') {
+            if (key == 's' || keyCode == PConstants.DOWN) {
                 keyPressed = false
                 gameState.lastDrawTime = 0
             }
