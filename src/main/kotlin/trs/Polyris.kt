@@ -3,19 +3,21 @@ package trs
 import kaiju.math.Matrix2d
 import processing.core.PApplet
 import processing.core.PConstants
+import kotlin.math.roundToInt
 
 fun main(args: Array<String>) {
     PApplet.main("trs.Polyris")
 }
 
-class GameState() {
+class GameState {
     var lastDrawTime = System.currentTimeMillis()
     var nextPos = 0
     val boxSize = 50f
     val xSize = 5 //Should be odd
     val ySize = 7 //Can be anything, try to keep it lower than your vertical resolution divided by 50
     var horizontalLocation = xSize / 2
-    val stuckPieces = Matrix2d(xSize, ySize, { x, y -> y > 13 })
+    val stuckPieces = Matrix2d(xSize, ySize, { x, y -> y > 13 })        //Play Field
+    val Polyminos = Matrix2d(4, 5, { x, y -> y > 13 })     //Blocks
 }
 
 class Polyris : PApplet() {
@@ -37,6 +39,7 @@ class Polyris : PApplet() {
         canBoxMove()
         drawStuckPieces()
         clearLines()
+        newPolyminos()
 
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
 
@@ -75,9 +78,9 @@ class Polyris : PApplet() {
 
     fun addBlocksToArray() {
         if (gameState.stuckPieces.contains(gameState.horizontalLocation, gameState.nextPos - 1)) {
-            gameState.stuckPieces[gameState.horizontalLocation, gameState.nextPos - 1] = true
-            gameState.nextPos = 0
-            gameState.horizontalLocation = gameState.xSize / 2
+            gameState.stuckPieces[gameState.horizontalLocation, gameState.nextPos - 1] = true       //Adds block(s) to the array
+            gameState.nextPos = 0                                                                   //Moves blocks to top of screen
+            gameState.horizontalLocation = gameState.xSize / 2                                      //Moves blocks to top of screen
         } else {
             gameState = GameState()
         }
@@ -159,6 +162,103 @@ class Polyris : PApplet() {
             if (key == 's' || keyCode == PConstants.DOWN) {
                 keyPressed = false
                 gameState.lastDrawTime = 0
+            }
+        }
+    }
+
+    fun newPolyminos() {
+        clearMatrix2d()
+        //set Polyminos to a new Polymino
+        var RNG = Math.random() * 12
+        if (RNG.roundToInt() == 0) {
+            gameState.Polyminos[0, 0] = true
+            gameState.Polyminos[1, 0] = true
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+        }//DONE
+        if (RNG.roundToInt() == 1) {
+            gameState.Polyminos[0, 0] = true
+            gameState.Polyminos[1, 0] = true
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[0, 2] = true
+        }//DONE
+        if (RNG.roundToInt() == 2) {
+            gameState.Polyminos[0, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[0, 2] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+        }//DONE
+        if (RNG.roundToInt() == 3) {
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+            gameState.Polyminos[0, 2] = true
+        }//DONE
+        if (RNG.roundToInt() == 4) {
+            gameState.Polyminos[1, 0] = true
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[0, 2] = true
+        }//DONE
+        if (RNG.roundToInt() == 5) {
+            gameState.Polyminos[0, 0] = true
+            gameState.Polyminos[1, 0] = true
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[3, 0] = true
+            gameState.Polyminos[4, 0] = true
+        }//DONE
+        if (RNG.roundToInt() == 6) {
+            gameState.Polyminos[0, 0] = true
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+        }//DONE
+        if (RNG.roundToInt() == 7) {
+            gameState.Polyminos[1, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+            gameState.Polyminos[1, 2] = true
+        }//DONE
+        if (RNG.roundToInt() == 8) {
+            gameState.Polyminos[0, 0] = true
+            gameState.Polyminos[1, 0] = true
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[3, 0] = true
+            gameState.Polyminos[0, 1] = true
+        }//DONE
+        if (RNG.roundToInt() == 9) {
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+            gameState.Polyminos[3, 1] = true
+        }
+        if (RNG.roundToInt() == 10) {
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[3, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+        }
+        if (RNG.roundToInt() == 11) {
+            gameState.Polyminos[2, 0] = true
+            gameState.Polyminos[0, 1] = true
+            gameState.Polyminos[1, 1] = true
+            gameState.Polyminos[2, 1] = true
+            gameState.Polyminos[1, 2] = true
+        }
+    }
+    fun clearMatrix2d() {
+        for (x in 0 until gameState.Polyminos.xSize) {
+            for (y in 0 until gameState.Polyminos.ySize) {
+                gameState.Polyminos[x, y] = false
             }
         }
     }
