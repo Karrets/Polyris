@@ -1,6 +1,5 @@
 # Polyris
-Tetris Clone
+A Tetris Clone
 
-Does this really need explaining.
-
-###### YES, IT DOES. Add an explanation.
+Tetris Except the Tetriminos are Polyminos meaning they are made of 5 blocks instead of 4.
+This is written in Kotlin.
