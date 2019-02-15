@@ -13,8 +13,8 @@ class GameState {
     var lastDrawTime = System.currentTimeMillis()
     var nextPos = 0
     val boxSize = 50f
-    val xSize = 5 //Should be odd
-    val ySize = 7 //Can be anything, try to keep it lower than your vertical resolution divided by 50
+    val xSize = 7 //Should be odd
+    val ySize = 9 //Can be anything, try to keep it lower than your vertical resolution divided by 50
     var horizontalLocation = xSize / 2
     val stuckPieces = Matrix2d(xSize, ySize, { x, y -> y > 13 })        //Play Field
     val Polyminos = Matrix2d(4, 5, { x, y -> y > 13 })     //Blocks
@@ -39,7 +39,6 @@ class Polyris : PApplet() {
         canBoxMove()
         drawStuckPieces()
         clearLines()
-        newPolyminos()
 
     }//IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA, IMPORTANT AREA
 
@@ -78,9 +77,17 @@ class Polyris : PApplet() {
 
     fun addBlocksToArray() {
         if (gameState.stuckPieces.contains(gameState.horizontalLocation, gameState.nextPos - 1)) {
-            gameState.stuckPieces[gameState.horizontalLocation, gameState.nextPos - 1] = true       //Adds block(s) to the array
+//            gameState.stuckPieces[gameState.horizontalLocation, gameState.nextPos - 1] = true     //Adds block(s) to the array
+            for (x in 0 until gameState.Polyminos.xSize) {
+                for (y in 0 until gameState.Polyminos.ySize) {
+                    if(gameState.Polyminos[x, y] == true){
+                        drawBox(gameState.horizontalLocation + x.toFloat(),(gameState.nextPos - 1) + -y.toFloat())
+                    }
+                }
+            }
             gameState.nextPos = 0                                                                   //Moves blocks to top of screen
             gameState.horizontalLocation = gameState.xSize / 2                                      //Moves blocks to top of screen
+            newPolyminos()
         } else {
             gameState = GameState()
         }
@@ -106,7 +113,7 @@ class Polyris : PApplet() {
                 addBlocksToArray()
             } else {
                 background(0f, 0f, 0f)
-                drawBox(gameState.horizontalLocation.toFloat(), gameState.nextPos.toFloat()) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
+                drawMovingBlocks(gameState.horizontalLocation, gameState.nextPos) //horizontalLocation must be 0 - 9, nextPos must be 0 - 14
                 if (gameState.stuckPieces[gameState.horizontalLocation, gameState.nextPos]) {
                     addBlocksToArray()
                 } else {
@@ -143,7 +150,7 @@ class Polyris : PApplet() {
                     if (gameState.horizontalLocation < 0) {
                         gameState.horizontalLocation = 0
                     }
-                    drawBox(gameState.horizontalLocation.toFloat(), gameState.nextPos.toFloat() - 1)
+                    drawMovingBlocks(gameState.horizontalLocation, gameState.nextPos - 1)
                 }
             }
             if (key == 'd' || keyCode == PConstants.RIGHT) {
@@ -156,7 +163,7 @@ class Polyris : PApplet() {
                         gameState.horizontalLocation = gameState.xSize - 2
                     }
                     gameState.horizontalLocation += 1
-                    drawBox(gameState.horizontalLocation.toFloat(), gameState.nextPos.toFloat() - 1)
+                    drawMovingBlocks(gameState.horizontalLocation, gameState.nextPos - 1)
                 }
             }
             if (key == 's' || keyCode == PConstants.DOWN) {
@@ -259,6 +266,15 @@ class Polyris : PApplet() {
         for (x in 0 until gameState.Polyminos.xSize) {
             for (y in 0 until gameState.Polyminos.ySize) {
                 gameState.Polyminos[x, y] = false
+            }
+        }
+    }
+    fun drawMovingBlocks(startX: Int, startY: Int){
+        for (x in 0 until gameState.Polyminos.xSize) {
+            for (y in 0 until gameState.Polyminos.ySize) {
+                if(gameState.Polyminos[x, y] == true){
+                    drawBox(startX + x.toFloat(),startY + -y.toFloat())
+                }
             }
         }
     }
